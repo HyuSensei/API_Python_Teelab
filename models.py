@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
 from database import Base
 from datetime import datetime
+from sqlalchemy.orm import relationship, backref
 
 class User(Base):
     __tablename__ = 'users'
@@ -47,6 +48,7 @@ class Order(Base):
     phone= Column(String(250))
     total= Column(Float)
     user_id= Column(Integer, ForeignKey('users.id'))
+    order_product = relationship("OrderProduct", backref=backref("orders", cascade="delete"))
     createdAt = Column(DateTime, default=datetime.utcnow)
     updatedAt = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -57,6 +59,7 @@ class OrderProduct(Base):
     product_id= Column(Integer, ForeignKey('products.id'))
     size= Column(String(250))
     quantity= Column(Integer)
+    product = relationship("Product")
     createdAt = Column(DateTime, default=datetime.utcnow)
     updatedAt = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
